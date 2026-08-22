@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  employeeId    String    @unique
+  name          String
+  email         String    @unique
+  password      String
+  role          String    @default("EMPLOYEE") // "ADMIN" or "EMPLOYEE"
+  jobDetails    String?
+  address       String?
+  phone         String?
+  profileImage  String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  attendances   Attendance[]
+  leaveRequests LeaveRequest[]
+  payrolls      Payroll[]
+}
+
+model Attendance {
+  id        String   @id @default(cuid())
+  date      DateTime
+  status    String   // "Present", "Absent", "Half-day", "Leave"
+  checkIn   DateTime?
+  checkOut  DateTime?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, date])
+}
+
+model LeaveRequest {
+  id            String   @id @default(cuid())
+  type          String   // "Paid", "Sick", "Unpaid"
+  startDate     DateTime
+  endDate       DateTime
+  remarks       String?
+  status        String   @default("Pending") // "Pending", "Approved", "Rejected"
+  adminComments String?
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Payroll {
+  id          String   @id @default(cuid())
+  month       Int
+  year        Int
+  baseSalary  Float
+  deductions  Float    @default(0)
+  netSalary   Float
+  status      String   @default("Paid") // "Pending", "Paid"
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, month, year])
+}
