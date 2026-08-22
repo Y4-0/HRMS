@@ -26,6 +26,9 @@ export default function DashboardLayout({ children }) {
           <Link href="/dashboard/attendance" className={styles.navItem}>Attendance</Link>
           <Link href="/dashboard/leave" className={styles.navItem}>Leave Requests</Link>
           <Link href="/dashboard/payroll" className={styles.navItem}>Payroll</Link>
+          {role === 'ADMIN' && (
+            <Link href="/dashboard/admin/reports" className={styles.navItem}>Reports & Analytics</Link>
+          )}
         </nav>
       </aside>
 

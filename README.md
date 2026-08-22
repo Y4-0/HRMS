@@ -88,10 +88,5 @@ The `prisma/seed.js` script populates the database with two initial users for te
 
 ---
 
-## 🔮 Future Enhancements
-- Email and notification alerts for leave approvals and payroll generation.
-- Advanced analytics and reporting dashboards with exportable CSVs.
-- Interactive charts for attendance and performance tracking.
-
 ## 📄 License
 This project is licensed under the MIT License.

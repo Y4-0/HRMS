@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { sendEmail } from "@/lib/mailer"
 
 export async function POST(req) {
   const session = await getServerSession(authOptions)
@@ -22,8 +23,16 @@ export async function POST(req) {
         deductions: deductions || 0,
         netSalary,
         status: "Pending"
-      }
+      },
+      include: { user: true }
     })
+    
+    await sendEmail({
+      to: newPayroll.user.email,
+      subject: `Payroll Generated for ${month}/${year}`,
+      text: `Hello ${newPayroll.user.name},\n\nYour payroll for ${month}/${year} has been generated.\nBase Salary: $${baseSalary}\nDeductions: $${deductions || 0}\nNet Salary: $${netSalary}\n\nLog in to the dashboard to view details.`
+    })
+
     return NextResponse.json(newPayroll)
   } catch (error) {
     if (error.code === 'P2002') {

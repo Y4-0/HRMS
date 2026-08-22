@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { sendEmail } from "@/lib/mailer"
 
 export async function POST(req) {
   const session = await getServerSession(authOptions)
@@ -33,7 +34,14 @@ export async function PUT(req) {
 
   const updatedRequest = await prisma.leaveRequest.update({
     where: { id },
-    data: { status, adminComments }
+    data: { status, adminComments },
+    include: { user: true }
+  })
+
+  await sendEmail({
+    to: updatedRequest.user.email,
+    subject: `Leave Request ${status}`,
+    text: `Hello ${updatedRequest.user.name},\n\nYour leave request from ${new Date(updatedRequest.startDate).toLocaleDateString()} to ${new Date(updatedRequest.endDate).toLocaleDateString()} has been marked as ${status} by Admin.\n\nComments: ${adminComments || 'None'}\n\nLog in to your dashboard to view more details.`
   })
 
   return NextResponse.json(updatedRequest)
