@@ -2,6 +2,7 @@
 import Link from "next/link"
 import { signOut, useSession } from "next-auth/react"
 import styles from "./dashboard.module.css"
+import Clock from "./Clock"
 
 export default function DashboardLayout({ children }) {
   const { data: session } = useSession()
@@ -35,6 +36,7 @@ export default function DashboardLayout({ children }) {
             <h3>Welcome, {session?.user?.name || 'User'}</h3>
           </div>
           <div className={styles.userInfo}>
+            <Clock />
             <span>{role === 'ADMIN' ? 'Admin / HR' : 'Employee'}</span>
             <button onClick={handleLogout} className={styles.logoutBtn}>Logout</button>
           </div>
