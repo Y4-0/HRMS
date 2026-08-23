@@ -1,5 +1,5 @@
 "use client"
-import styles from "../../../dashboard.module.css"
+import styles from "../../dashboard.module.css"
 
 export default function ReportsClient({ users, attendances, leaves, payrolls }) {
   const downloadCSV = (data, filename) => {
