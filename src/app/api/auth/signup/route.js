@@ -31,7 +31,7 @@ export async function POST(req) {
         name,
         email,
         password: hashedPassword,
-        role: role || "EMPLOYEE",
+        role: "EMPLOYEE", // Hardcoded to prevent privilege escalation
       }
     })
 
