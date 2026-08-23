@@ -1,4 +1,4 @@
-# Neon HRMS - Human Resource Management System
+# HRMS - Human Resource Management System
 
 A comprehensive, modern, full-stack Human Resource Management System (HRMS) built with Next.js, Prisma, and NextAuth. Neon HRMS is designed to streamline core HR operations such as employee onboarding, attendance tracking, leave management, and payroll processing, all wrapped in a sleek, interactive, neon-dark interface.
 
